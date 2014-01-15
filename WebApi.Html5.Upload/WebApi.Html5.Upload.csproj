@@ -195,7 +195,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\CustomMultipartFormDataStreamProvider.cs" />
-    <Compile Include="Models\FileDesc.cs" />
+    <Compile Include="Models\Reading.cs" />
+    <Compile Include="Models\ReadingMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

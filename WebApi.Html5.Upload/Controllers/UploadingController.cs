@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,28 +17,27 @@ namespace WebApi.Html5.Upload.Controllers
 {
     public class UploadingController : ApiController
     {
-        public Task<IEnumerable<FileDesc>> Post()
+        public void Post()
         {
-            string folderName = "uploads";
-            string PATH = HttpContext.Current.Server.MapPath("~/" + folderName);
-            string rootUrl = Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.AbsolutePath, String.Empty);
-
             if (Request.Content.IsMimeMultipartContent()) {
-                var streamProvider = new CustomMultipartFormDataStreamProvider(PATH);
-                var task = Request.Content.ReadAsMultipartAsync(streamProvider).ContinueWith<IEnumerable<FileDesc>>(t => {
-
-                    if (t.IsFaulted || t.IsCanceled) {
-                        throw new HttpResponseException(HttpStatusCode.InternalServerError);
-                    }
-
-                    var fileInfo = streamProvider.FileData.Select(i => {
-                        var info = new FileInfo(i.LocalFileName);
-                        return new FileDesc(info.Name, rootUrl + "/" + folderName + "/" + info.Name, info.Length / 1024);
+                var streamProvider = new MultipartMemoryStreamProvider();
+                Request.Content
+                    .ReadAsMultipartAsync(streamProvider)
+                    .ContinueWith(t => {
+                        if (t.IsFaulted || t.IsCanceled) {
+                            throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                        }
+                        foreach (var item in streamProvider.Contents) {
+                            var getContentTask = item.ReadAsStreamAsync();
+                            var csvReader = new CsvReader(new StreamReader(getContentTask.Result));
+                            csvReader.Configuration.CultureInfo = CultureInfo.CurrentCulture;
+                            csvReader.Configuration.Delimiter = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+                            csvReader.Configuration.RegisterClassMap<Models.ReadingMap>();
+                            while (csvReader.Read()) {
+                                Debug.WriteLine(csvReader.GetRecord<Models.Reading>());
+                            }
+                        }
                     });
-                    return fileInfo;
-                });
-
-                return task;
             } else {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted"));
             }
