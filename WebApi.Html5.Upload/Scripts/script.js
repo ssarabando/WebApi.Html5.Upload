@@ -22,7 +22,7 @@ function drop(evt) {
             var data = new FormData();
             for (i = 0; i < files.length; i++) {
                 //console.log(files[i]);
-                data.append("file"+i,files[i]);
+                data.append("file" + i, files[i]);
             }
 
             $.ajax({
@@ -51,5 +51,5 @@ $(document).ready(function () {
     $box.bind("drop", drop);
 });
 
-var viewModel = {uploads: ko.observableArray([])}
+var viewModel = { uploads: ko.observableArray([]) }
 ko.applyBindings(viewModel);

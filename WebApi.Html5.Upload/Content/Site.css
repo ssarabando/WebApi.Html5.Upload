@@ -5,13 +5,13 @@
 }
 
 #ulbox {
-	width: 200px;
-	height: 200px;
-	border: 2px solid #DDD;
-	border-radius: 8px;
-	float: left;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    float: left;
     margin:  0 20px;
-	text-align: center;
+    text-align: center;
     background: #e1e1e1;
     border: 2px solid #808080;
 }
