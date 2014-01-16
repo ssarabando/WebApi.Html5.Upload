@@ -1,47 +1,45 @@
-﻿<form id="myForm">
+﻿<form name="myForm">
     <label for="filename">File</label>
     <input id="filename" type="file" accept=".csv" />
     <input type="submit" value="Submit" />
 </form>
 @section scripts {
     <script type="text/javascript">
-        (function ($) {
-            $('#myForm').submit(function (evt) {
-                evt.preventDefault();
+        document.myForm.addEventListener('submit', function (evt) {
+            evt.preventDefault();
 
-                var files = document.getElementById('filename').files;
-                if (files.length !== 0) {
-                    var file = files[0];
+            var files = document.getElementById('filename').files;
+            if (files.length !== 0) {
+                var file = files[0];
 
-                    var fd = new FormData();
-                    fd.append(file.name, file);
+                var fd = new FormData();
+                fd.append(file.name, file);
 
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('post', '/api/uploading', true);
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4) {
-                            if (xhr.status === 200) {
-                                console.log(xhr.responseText);
-                            } else {
-                                console.log(xhr.status + ' ' + xhr.statusText);
-                            }
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/api/uploading', true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status === 200) {
+                            console.log(xhr.responseText);
+                        } else {
+                            console.log(xhr.status + ' ' + xhr.statusText);
                         }
-                    };
-                    xhr.addEventListener('error', function (e) {
-                        console.log('Error during upload: ' + e.message);
-                    });
-                    xhr.upload.addEventListener('progress', function (e) {
-                        if (e.lengthComputable) {
-                            var percentage = Math.round(e.loaded * 100 / e.total);
-                            console.log(percentage + '% uploaded');
-                        }
-                    }, false);
-                    xhr.upload.addEventListener('load', function (e) {
-                        console.log('File uploaded');
-                    }, false);
-                    xhr.send(fd);
-                }
-            });
-        })(jQuery);
+                    }
+                };
+                xhr.addEventListener('error', function (e) {
+                    console.log('Error during upload: ' + e.message);
+                });
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        var percentage = Math.round(e.loaded * 100 / e.total);
+                        console.log(percentage + '% uploaded');
+                    }
+                }, false);
+                xhr.upload.addEventListener('load', function (e) {
+                    console.log('File uploaded');
+                }, false);
+                xhr.send(fd);
+            }
+        }, false);
     </script>
 }
