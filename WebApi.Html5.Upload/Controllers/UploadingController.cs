@@ -16,13 +16,13 @@ namespace WebApi.Html5.Upload.Controllers
 {
     public class UploadingController : ApiController
     {
-        public void Post()
+        public Task<HttpResponseMessage> Post()
         {
             if (Request.Content.IsMimeMultipartContent()) {
                 var streamProvider = new MultipartMemoryStreamProvider();
-                Request.Content
+                var task = Request.Content
                     .ReadAsMultipartAsync(streamProvider)
-                    .ContinueWith(t => {
+                    .ContinueWith<HttpResponseMessage>(t => {
                         if (t.IsFaulted || t.IsCanceled) {
                             throw new HttpResponseException(HttpStatusCode.InternalServerError);
                         }
@@ -36,7 +36,9 @@ namespace WebApi.Html5.Upload.Controllers
                                 Debug.WriteLine(csvReader.GetRecord<Models.Reading>());
                             }
                         }
+                        return Request.CreateResponse(HttpStatusCode.OK);
                     });
+                return task;
             } else {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted"));
             }
