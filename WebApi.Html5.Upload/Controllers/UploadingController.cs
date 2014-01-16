@@ -36,7 +36,9 @@ namespace WebApi.Html5.Upload.Controllers
                                 Debug.WriteLine(csvReader.GetRecord<Reading>());
                             }
                         }
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK, new {
+                            Result = "OK"
+                        });
                     });
                 return task;
             } else {
