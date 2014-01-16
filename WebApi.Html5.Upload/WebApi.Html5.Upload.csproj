@@ -194,7 +194,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\CustomMultipartFormDataStreamProvider.cs" />
     <Compile Include="Models\Reading.cs" />
     <Compile Include="Models\ReadingMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,8 +216,6 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\script.js" />
-    <Content Include="uploads\readme.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

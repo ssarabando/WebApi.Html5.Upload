@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using WebApi.Html5.Upload.Infrastructure;
 using WebApi.Html5.Upload.Models;
 
 namespace WebApi.Html5.Upload.Controllers
