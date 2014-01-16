@@ -8,12 +8,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using WebApi.Html5.Upload.Models;
 
 namespace WebApi.Html5.Upload.Controllers
 {
+    using Models;
+
     public class UploadingController : ApiController
     {
         public Task<HttpResponseMessage> Post()
@@ -31,9 +31,9 @@ namespace WebApi.Html5.Upload.Controllers
                             var csvReader = new CsvReader(new StreamReader(getContentTask.Result));
                             csvReader.Configuration.CultureInfo = CultureInfo.CurrentCulture;
                             csvReader.Configuration.Delimiter = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-                            csvReader.Configuration.RegisterClassMap<Models.ReadingMap>();
+                            csvReader.Configuration.RegisterClassMap<ReadingMap>();
                             while (csvReader.Read()) {
-                                Debug.WriteLine(csvReader.GetRecord<Models.Reading>());
+                                Debug.WriteLine(csvReader.GetRecord<Reading>());
                             }
                         }
                         return Request.CreateResponse(HttpStatusCode.OK);
